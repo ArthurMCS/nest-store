@@ -1,4 +1,16 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  CreateDateColumn,
+  DeleteDateColumn,
+  Entity,
+  ManyToOne,
+  OneToMany,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
+} from 'typeorm';
+import { ProdutoCaracteristicaEntity } from './produto.caracteristica.entity';
+import { ProdutoImagemEntity } from './produto.imagem.entity';
+import { UsuarioEntity } from 'src/usuario/usuario.entity';
 
 @Entity({ name: 'produtos' })
 export class ProdutoEntity {
@@ -23,6 +35,29 @@ export class ProdutoEntity {
   @Column({ name: 'categoria', length: 100, nullable: false })
   categoria: string;
 
-  /*   caracteristicas: CaracteristicaProduto[];
-  imagens: ImagemProduto[]; */
+  @OneToMany(
+    () => ProdutoCaracteristicaEntity,
+    (produtoCaracteristicaEntity) => produtoCaracteristicaEntity.produto,
+    { cascade: true, eager: true },
+  )
+  caracteristicas: ProdutoCaracteristicaEntity[];
+
+  @OneToMany(
+    () => ProdutoImagemEntity,
+    (produtoImagemEntity) => produtoImagemEntity.produto,
+    { cascade: true, eager: true },
+  )
+  imagens: ProdutoImagemEntity[];
+
+  @ManyToOne(() => UsuarioEntity, (usuario) => usuario.produtos)
+  usuario: UsuarioEntity;
+
+  @CreateDateColumn({ name: 'created_at' })
+  createAt: string;
+
+  @UpdateDateColumn({ name: 'updated_at' })
+  updateAt: string;
+
+  @DeleteDateColumn({ name: 'deleted_at' })
+  deleteAt: string;
 }
