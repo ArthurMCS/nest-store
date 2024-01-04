@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { ListaProdutoDTO } from './dto/ListaProduto.dto';
 import { ProdutoEntity } from './produto.entity';
 import { Repository } from 'typeorm';
-import { ListaProdutoDTO } from './dto/ListaProduto.dto';
 import { AtualizaProdutoDTO } from './dto/AtualizaProduto.dto';
 import { CriaProdutoDTO } from './dto/CriaProduto.dto';
 
@@ -17,8 +17,8 @@ export class ProdutoService {
     const produtoEntity = new ProdutoEntity();
 
     produtoEntity.nome = dadosProduto.nome;
-    produtoEntity.usuarioId = dadosProduto.usuarioId;
     produtoEntity.valor = dadosProduto.valor;
+    produtoEntity.usuarioId = dadosProduto.usuarioId;
     produtoEntity.quantidadeDisponivel = dadosProduto.quantidadeDisponivel;
     produtoEntity.descricao = dadosProduto.descricao;
     produtoEntity.categoria = dadosProduto.categoria;
@@ -29,9 +29,20 @@ export class ProdutoService {
   }
 
   async listProdutos() {
-    const produtosSalvos = await this.produtoRepository.find();
+    const produtosSalvos = await this.produtoRepository.find({
+      relations: {
+        imagens: true,
+        caracteristicas: true,
+      },
+    });
     const produtosLista = produtosSalvos.map(
-      (produto) => new ListaProdutoDTO(produto.id, produto.nome),
+      (produto) =>
+        new ListaProdutoDTO(
+          produto.id,
+          produto.nome,
+          produto.caracteristicas,
+          produto.imagens,
+        ),
     );
     return produtosLista;
   }
@@ -39,7 +50,7 @@ export class ProdutoService {
   async atualizaProduto(id: string, novosDados: AtualizaProdutoDTO) {
     const entityName = await this.produtoRepository.findOneBy({ id });
     Object.assign(entityName, novosDados);
-    await this.produtoRepository.save(entityName);
+    return this.produtoRepository.save(entityName);
   }
 
   async deletaProduto(id: string) {

@@ -1,4 +1,3 @@
-import { ProdutoEntity } from 'src/produto/produto.entity';
 import {
   Entity,
   Column,
@@ -6,7 +5,6 @@ import {
   UpdateDateColumn,
   DeleteDateColumn,
   PrimaryGeneratedColumn,
-  OneToMany,
 } from 'typeorm';
 
 @Entity({ name: 'usuarios' })
@@ -24,11 +22,11 @@ export class UsuarioEntity {
   senha: string;
 
   @CreateDateColumn({ name: 'created_at' })
-  createAt: string;
+  createdAt: string;
 
   @UpdateDateColumn({ name: 'updated_at' })
-  updateAt: string;
+  updatedAt: string;
 
   @DeleteDateColumn({ name: 'deleted_at' })
-  deleteAt: string;
+  deletedAt: string;
 }

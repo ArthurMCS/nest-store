@@ -3,16 +3,13 @@ import {
   Controller,
   Delete,
   Get,
-  Logger,
   Param,
   Post,
   Put,
 } from '@nestjs/common';
-import { randomUUID } from 'crypto';
 
-import { CriaProdutoDTO } from './dto/CriaProduto.dto';
-import { ProdutoEntity } from './produto.entity';
 import { AtualizaProdutoDTO } from './dto/AtualizaProduto.dto';
+import { CriaProdutoDTO } from './dto/CriaProduto.dto';
 import { ProdutoService } from './produto.service';
 
 @Controller('produtos')
@@ -41,8 +38,6 @@ export class ProdutoController {
     @Param('id') id: string,
     @Body() dadosProduto: AtualizaProdutoDTO,
   ) {
-    Logger.log('atualiza');
-    Logger.log(dadosProduto);
     const produtoAlterado = await this.produtoService.atualizaProduto(
       id,
       dadosProduto,

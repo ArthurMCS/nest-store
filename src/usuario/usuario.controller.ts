@@ -7,12 +7,9 @@ import {
   Post,
   Put,
 } from '@nestjs/common';
-import { v4 as uuid } from 'uuid';
 import { AtualizaUsuarioDTO } from './dto/AtualizaUsuario.dto';
 import { CriaUsuarioDTO } from './dto/CriaUsuario.dto';
 import { ListaUsuarioDTO } from './dto/ListaUsuario.dto';
-import { UsuarioEntity } from './usuario.entity';
-import { UsuarioRepository } from './usuario.repository';
 import { UsuarioService } from './usuario.service';
 
 @Controller('/usuarios')
@@ -31,7 +28,7 @@ export class UsuarioController {
 
   @Get()
   async listUsuarios() {
-    const usuariosSalvos = await this.usuarioService.listaUsuario();
+    const usuariosSalvos = await this.usuarioService.listUsuarios();
 
     return usuariosSalvos;
   }
