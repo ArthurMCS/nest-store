@@ -23,9 +23,6 @@ export class UsuarioEntity {
   @Column({ name: 'senha', length: 255, nullable: false })
   senha: string;
 
-  @OneToMany(() => ProdutoEntity, (produto) => produto.usuarioId)
-  produtos: ProdutoEntity[];
-
   @CreateDateColumn({ name: 'created_at' })
   createAt: string;
 
